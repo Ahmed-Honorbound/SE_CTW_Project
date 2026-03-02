@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Study Planner</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f5f7fa;
+    color: #333;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 60px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+nav h2 {
+    color: #4e73df;
+}
+
+nav a {
+    text-decoration: none;
+    margin-left: 20px;
+    color: #333;
+    font-weight: 500;
+}
+
+.hero {
+    text-align: center;
+    padding: 120px 20px;
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+button {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.primary-btn {
+    background: white;
+    color: #4e73df;
+}
+
+.primary-btn:hover {
+    transform: scale(1.05);
+}
+
+.section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    width: 280px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.footer {
+    background: #2e2e2e;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>Smart Study Planner</h2>
+    <div>
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Organize Your Time. Optimize Your Future.</h1>
+    <p>Smart scheduling, task tracking, and productivity insights — all in one place.</p>
+    <button class="primary-btn" onclick="alert('App Launching Soon!')">Get Started</button>
+</section>
+
+<section class="section" id="features">
+    <h2>Powerful Features</h2>
+    <div class="features">
+        <div class="card">
+            <h3>Smart Scheduling</h3>
+            <p>Automatically calculates available hours and builds personalized study plans.</p>
+        </div>
+        <div class="card">
+            <h3>Task Management</h3>
+            <p>Create tasks, log study sessions, and track completion progress.</p>
+        </div>
+        <div class="card">
+            <h3>Weekly & Monthly Insights</h3>
+            <p>See productivity analytics and optimization suggestions.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="how">
+    <h2>How It Works</h2>
+    <p>Input your schedule → Add tasks → Track time → Get smart recommendations.</p>
+</section>
+
+<section class="section" id="contact">
+    <h2>Built for Students</h2>
+    <p>A project designed to help students balance academic performance and personal time efficiently.</p>
+</section>
+
+<footer class="footer">
+    <p>© 2026 Smart Study Planner | Built with GitHub Pages</p>
+</footer>
+
+</body>
+</html>
