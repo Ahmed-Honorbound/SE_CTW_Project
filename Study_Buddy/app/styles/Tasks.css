@@ -1,0 +1,26 @@
+.container {
+    justify-content: center;
+    justify-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.taskItem {
+    background-color: goldenrod;
+    border-radius: 5;
+    border-width:1;
+    padding: 20;
+    padding-left: 250;
+    padding-right: 250;
+    display: flex;
+    margin-bottom: 25;
+    
+}
+
+.taskButton {
+    background-color: green;
+    border-radius: 20;
+    border-width: 1;
+    border-color: white;
+    padding: 15;
+}
