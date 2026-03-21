@@ -1,0 +1,30 @@
+.taskboard {
+    background-color: black;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    gap: 5;
+    flex-direction: column;
+    padding: 9;
+    align-items: center;
+    border-radius: 10;
+    border-width: 1;
+    height: 100vh;
+}
+
+.taskItems {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    gap: 10;
+}
+
+.tasks {
+    background-color: aliceblue;
+    border-radius: 10;
+    border-width: 2;
+    border-color: blue;
+    padding: 20;
+    color: black;
+}
