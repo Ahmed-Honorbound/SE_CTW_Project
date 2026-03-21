@@ -6,6 +6,6 @@ import "../app/styles/Dashboard.css"
 
 export default function Home() {
   return (
-    <Navbar/>
+    <div></div>
   );
 }
