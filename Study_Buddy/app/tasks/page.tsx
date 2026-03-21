@@ -1,30 +1,25 @@
-import Image from "next/image";
-import Navbar from "../components/Navbar";
-import "../../app/styles/Tasks.css"
+'use client';
 
-export default function task() {
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
+import TaskForm from '../components/TaskForm';
+import '../../app/styles/Tasks.css';
+
+function TasksContent() {
+  const searchParams = useSearchParams();
+  const taskId = searchParams.get('taskId') ?? undefined;
+
   return (
     <div className="container">
-        ADD NEW TASK
-        <div>
-          <label className="taskItem">
-              Task Name: <input name="myInput"/>
-          </label>
-          <label className="taskItem">
-              Subject: <input name="myInput"/>
-          </label>
-          <label className="taskItem">
-              Due Date: <input name="myInput"/>
-          </label>
-          <label className="taskItem">
-              Priority: <input name="myInput"/>
-          </label>
-        </div>
-        <a>
-          <button className="taskButton">
-            Save Task
-          </button>
-        </a>
+      <TaskForm taskId={taskId} />
     </div>
+  );
+}
+
+export default function TasksPage() {
+  return (
+    <Suspense fallback={<div className="container">Loading...</div>}>
+      <TasksContent />
+    </Suspense>
   );
 }

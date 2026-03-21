@@ -2,12 +2,11 @@ import Image from "next/image";
 import Navbar from "./components/Navbar";
 import Taskboard from "./components/Taskboard";
 import Progresschart from "./components/Progresschart";
-import "../app/styles/Dashboard.css"
+import "../app/styles/landing.css"
 
 export default function Home() { //Must wrap the details in this exxport function.
   return (
     <div>
-      <body>
           <nav>
               <h2>Smart Study Planner</h2>
               <div>
@@ -55,7 +54,6 @@ export default function Home() { //Must wrap the details in this exxport functio
               <p>© 2026 Smart Study Planner | Built with GitHub Pages</p>
           </footer>
 
-      </body>
     </div>
   );
 }
