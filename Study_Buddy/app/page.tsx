@@ -3,7 +3,6 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-pink-50 via-white to-purple-50 text-gray-900">
-      {/* Navbar */}
       <nav className="flex items-center justify-between px-8 py-5">
         <h1 className="text-2xl font-extrabold tracking-tight text-purple-700">
           Study Buddy
@@ -26,7 +25,6 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section className="mx-auto flex max-w-6xl flex-col items-center px-8 py-20 text-center">
         <p className="mb-4 rounded-full bg-pink-100 px-4 py-2 text-sm font-medium text-pink-700">
           Stay organized. Study smarter.
@@ -58,7 +56,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="mx-auto max-w-6xl px-8 pb-20">
         <h3 className="mb-10 text-center text-3xl font-bold text-purple-800">
           Why students love Study Buddy
@@ -97,7 +94,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-gray-200 px-8 py-6 text-center text-sm text-gray-500">
         © 2026 Study Buddy. Designed for students who want to stay ahead.
       </footer>
