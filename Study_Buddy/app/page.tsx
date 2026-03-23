@@ -1,65 +1,106 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="min-h-screen bg-gradient-to-b from-pink-50 via-white to-purple-50 text-gray-900">
+      {/* Navbar */}
+      <nav className="flex items-center justify-between px-8 py-5">
+        <h1 className="text-2xl font-extrabold tracking-tight text-purple-700">
+          Study Buddy
+        </h1>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href="/login"
+            className="rounded-full border border-purple-300 px-5 py-2 text-sm font-medium text-purple-700 transition hover:bg-purple-50"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Login
+          </Link>
+
+          <Link
+            href="/signup"
+            className="rounded-full bg-purple-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-purple-700"
           >
-            Documentation
-          </a>
+            Sign Up
+          </Link>
         </div>
-      </main>
-    </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="mx-auto flex max-w-6xl flex-col items-center px-8 py-20 text-center">
+        <p className="mb-4 rounded-full bg-pink-100 px-4 py-2 text-sm font-medium text-pink-700">
+          Stay organized. Study smarter.
+        </p>
+
+        <h2 className="max-w-4xl text-5xl font-extrabold leading-tight md:text-6xl">
+          Your all-in-one student planner for tasks, deadlines, and success.
+        </h2>
+
+        <p className="mt-6 max-w-2xl text-lg text-gray-600">
+          Study Buddy helps students stay on top of assignments, manage time
+          better, and keep school life organized in one place.
+        </p>
+
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+          <Link
+            href="/signup"
+            className="rounded-full bg-pink-600 px-7 py-3 text-base font-semibold text-white shadow-md transition hover:bg-pink-700"
+          >
+            Get Started
+          </Link>
+
+          <Link
+            href="/login"
+            className="rounded-full border border-gray-300 px-7 py-3 text-base font-semibold text-gray-700 transition hover:bg-gray-100"
+          >
+            I already have an account
+          </Link>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="mx-auto max-w-6xl px-8 pb-20">
+        <h3 className="mb-10 text-center text-3xl font-bold text-purple-800">
+          Why students love Study Buddy
+        </h3>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="rounded-3xl border border-pink-100 bg-white p-8 shadow-sm">
+            <h4 className="mb-3 text-xl font-semibold text-pink-700">
+              Track Assignments
+            </h4>
+            <p className="text-gray-600">
+              Keep all your homework, quizzes, projects, and due dates in one
+              simple place.
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-purple-100 bg-white p-8 shadow-sm">
+            <h4 className="mb-3 text-xl font-semibold text-purple-700">
+              Stay Focused
+            </h4>
+            <p className="text-gray-600">
+              Organize your responsibilities so you can study with less stress
+              and more confidence.
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-blue-100 bg-white p-8 shadow-sm">
+            <h4 className="mb-3 text-xl font-semibold text-blue-700">
+              Build Better Habits
+            </h4>
+            <p className="text-gray-600">
+              Create a better routine by seeing what needs to be done and when
+              it is due.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-200 px-8 py-6 text-center text-sm text-gray-500">
+        © 2026 Study Buddy. Designed for students who want to stay ahead.
+      </footer>
+    </main>
   );
 }
