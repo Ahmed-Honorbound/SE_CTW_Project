@@ -1,0 +1,6 @@
+#This is an example file for the .env.local file you need to make yourself.
+#1. Rename this file to <.env.local> and imput the following information: 
+#Remove this text and the above lines after. 
+
+NEXT_PUBLIC_SUPABASE_URL= 
+NEXT_PUBLIC_SUPABASE_ANON_KEY=

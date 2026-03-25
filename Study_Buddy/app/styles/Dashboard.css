@@ -1,0 +1,7 @@
+.dashboard {
+    display: flex;
+}
+.child {
+    flex: 1;
+    gap: 10;
+}
