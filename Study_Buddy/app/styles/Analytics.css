@@ -1,0 +1,164 @@
+.analytics-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.summary-panel {
+  background: #1a1a2e;
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+}
+
+.summary-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.summary-nav h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.summary-nav button {
+  background: none;
+  border: 1px solid #444;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.summary-nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.current-badge {
+  font-size: 0.7rem;
+  background: #4a90d9;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.period-label {
+  color: #aaa;
+  font-size: 0.85rem;
+  margin: 0 0 16px;
+}
+
+.empty-state {
+  color: #888;
+  font-style: italic;
+}
+
+.stat-grid {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: #0f3460;
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+.outcome-breakdown {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.outcome.ahead { color: #4caf50; }
+.outcome.ontime { color: #2196f3; }
+.outcome.overdue { color: #f44336; }
+
+.longest-task {
+  font-size: 0.85rem;
+  color: #ccc;
+  margin: 0;
+}
+
+.subject-breakdown {
+  margin-top: 16px;
+  border-top: 1px solid #333;
+  padding-top: 12px;
+}
+
+.subject-breakdown h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.subject-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #222;
+  font-size: 0.85rem;
+}
+
+.subject-name { font-weight: bold; flex: 1; }
+.subject-time { color: #4a90d9; }
+.subject-outcomes { color: #aaa; }
+
+.subject-insight {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin: 6px 0 0;
+}
+
+.suggestion-block {
+  margin-bottom: 16px;
+}
+
+.suggestion-block h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.suggestion-block p {
+  font-size: 0.85rem;
+  color: #ccc;
+  margin: 0 0 6px;
+}
+
+.suggestion-block ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.9rem;
+}
+
+.suggestion-block li {
+  margin-bottom: 4px;
+}
