@@ -20,6 +20,11 @@ function Navbar() {
                     Tasks 
                 </button>
             </a>
+            <a href="/analytics" className='button'>
+                <button>
+                    Analytics
+                </button>
+            </a>
             <a href="/calendar" className='button'>
                 <button>
                     Calendar 

@@ -1,7 +1,13 @@
 .dashboard {
     display: flex;
+    height: 100vh;
+    overflow: hidden;
 }
+
 .child {
     flex: 1;
-    gap: 10;
+    gap: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }

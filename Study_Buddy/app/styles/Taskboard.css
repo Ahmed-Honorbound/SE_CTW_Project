@@ -1,15 +1,19 @@
 .taskboard {
     background-color: black;
-    justify-content: center;
     text-align: center;
     display: flex;
-    gap: 5;
     flex-direction: column;
-    padding: 9;
+    gap: 5px;
+    padding: 9px;
     align-items: center;
-    border-radius: 10;
-    border-width: 1;
-    height: 100vh;
+    border-radius: 10px;
+    border-width: 1px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.status-section {
+    width: 100%;
 }
 
 .taskItems {
@@ -27,4 +31,25 @@
     border-color: blue;
     padding: 20;
     color: black;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.collapse-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: inherit;
+    padding: 0 4px;
 }
