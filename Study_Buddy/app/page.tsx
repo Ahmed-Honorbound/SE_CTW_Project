@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 import Taskboard from "./components/Taskboard";
 import Progresschart from "./components/Progresschart";
 import "../app/styles/landing.css"
+=======
+import "./styles/landing.css"; //Imports are up here
+>>>>>>> b3b4fa1eddb21c6fa47c95a4b98918bc59fb2b5d
 
 export default function Home() { //Must wrap the details in this exxport function.
   return (
