@@ -54,7 +54,13 @@ export default function SuggestionsPanel({ suggestions }: SuggestionsPanelProps)
         <div className="suggestion-block">
           <h3>🕐 Best Study Hours</h3>
           <p>You tend to start sessions most often at:</p>
-          <ul>{suggestions.mostProductiveHours.map(h => <li key={h}>{h}:00 – {h + 1}:00</li>)}</ul>
+          <ul>{suggestions.mostProductiveHours.map(h => {
+            const start = h % 12 || 12;
+            const end = (h + 1) % 12 || 12;
+            const startAmPm = h < 12 ? 'AM' : 'PM';
+            const endAmPm = (h + 1) < 12 ? 'AM' : 'PM';
+            return <li key={h}>{start}:00 {startAmPm} – {end}:00 {endAmPm}</li>;
+          })}</ul>
         </div>
       )}
     </div>

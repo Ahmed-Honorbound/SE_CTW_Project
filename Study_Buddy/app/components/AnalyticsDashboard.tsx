@@ -30,10 +30,10 @@ export default function AnalyticsDashboard() {
   }, []);
 
   function prevWeek() {
-    setWeekStart(w => { const d = new Date(w); d.setUTCDate(d.getUTCDate() - 7); return d; });
+    setWeekStart(w => { const d = new Date(w); d.setDate(d.getDate() - 7); return d; });
   }
   function nextWeek() {
-    setWeekStart(w => { const d = new Date(w); d.setUTCDate(d.getUTCDate() + 7); return d; });
+    setWeekStart(w => { const d = new Date(w); d.setDate(d.getDate() + 7); return d; });
   }
   function prevMonth() {
     setMonth(m => { if (m === 0) { setYear(y => y - 1); return 11; } return m - 1; });

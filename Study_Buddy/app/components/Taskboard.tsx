@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Task, TaskStatus } from '../../lib/types';
 import { fetchAllTasks, updateTaskStatus } from '../../lib/taskService';
+import { evaluateNotifications } from '../../lib/notificationService';
 import TaskCard from './TaskCard';
 import '../styles/Taskboard.css';
 
@@ -53,6 +54,7 @@ export default function Taskboard() {
         overdueIds.includes(t.id) ? { ...t, status: 'Overdue' as TaskStatus } : t
       );
       setGrouped(groupByStatus(updated));
+      await evaluateNotifications(updated);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load tasks.');
     } finally {

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Task } from '../../lib/types';
 import { updateTaskStatus, deleteTask, recordCompletion, stopTimeSession, uncompleteTask } from '../../lib/taskService';
+import { deleteNotificationsForTask, markNotificationsReadForTask } from '../../lib/notificationService';
 import SubtaskList from './SubtaskList';
 import TaskTimer from './TaskTimer';
 
@@ -38,6 +39,7 @@ export default function TaskCard({ task, onUpdate }: TaskCardProps) {
       }
       await updateTaskStatus(task.id, 'Complete');
       await recordCompletion(task.id, task.due_date);
+      await markNotificationsReadForTask(task.id);
       onUpdate();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to complete task.');
@@ -47,6 +49,7 @@ export default function TaskCard({ task, onUpdate }: TaskCardProps) {
   async function handleDelete() {
     setError(null);
     try {
+      await deleteNotificationsForTask(task.id);
       await deleteTask(task.id);
       onUpdate();
     } catch (err) {

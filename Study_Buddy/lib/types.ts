@@ -55,3 +55,17 @@ export interface ValidationErrors {
   priority?: string;
   description?: string;
 }
+
+export type NotificationType = 'due_soon' | 'overdue';
+
+export interface AppNotification {
+  id: string;               // UUID, assigned by Supabase
+  task_id: string;
+  task_name: string;
+  subject: string;
+  due_date: string;         // YYYY-MM-DD
+  priority: Priority;
+  type: NotificationType;
+  read: boolean;
+  created_at: string;       // ISO timestamp
+}

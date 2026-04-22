@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react'
 import "../styles/Navbar.css";
+import NotificationBell from './NotificationBell';
 
 function Navbar() {
   return (
@@ -40,7 +43,7 @@ function Navbar() {
                     Settings 
                 </button>
             </a>
-            
+            <NotificationBell />
         </div>
     </div>
   )
