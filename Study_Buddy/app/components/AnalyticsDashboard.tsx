@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import {
-  fetchAnalyticsData,
   computeWeeklyStats,
   computeMonthlyStats,
   computeSuggestions,
   getWeekStart,
   RawAnalyticsData,
-} from '../../lib/analyticsService';
+} from '../../lib/analyticsUtils';
+import { fetchAnalyticsData } from '../../lib/apiClient';
 import WeeklySummary from './WeeklySummary';
 import MonthlySummary from './MonthlySummary';
 import SuggestionsPanel from './SuggestionsPanel';

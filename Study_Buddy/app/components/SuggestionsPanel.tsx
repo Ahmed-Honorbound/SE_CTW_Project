@@ -1,6 +1,6 @@
 'use client';
 
-import { Suggestions } from '../../lib/analyticsService';
+import type { Suggestions } from '../../lib/analyticsUtils';
 
 interface SuggestionsPanelProps {
   suggestions: Suggestions;

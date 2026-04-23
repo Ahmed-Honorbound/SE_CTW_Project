@@ -4,6 +4,7 @@ export type EventType = 'class' | 'task' | 'work' | 'personal' | 'appointment';
 
 export interface CalendarEvent {
   id: string;           // UUID, assigned by Supabase
+  user_id?: string;
   title: string;
   type: EventType;
   start: string;        // ISO timestamptz
@@ -142,23 +143,24 @@ export function shouldShowBadge(alreadyShown: boolean, condition: boolean): bool
   return condition;
 }
 
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
+
+type Db = SupabaseClient;
 
 // ─── Supabase I/O ─────────────────────────────────────────────────────────────
 
-/** Fetches all calendar events ordered by start ascending. */
-export async function fetchEvents(): Promise<CalendarEvent[]> {
+export async function fetchEvents(supabase: Db, userId: string): Promise<CalendarEvent[]> {
   const { data, error } = await supabase
     .from('calendar_events')
     .select('*')
+    .eq('user_id', userId)
     .order('start', { ascending: true });
 
   if (error) throw new Error(error.message);
-  return data as CalendarEvent[];
+  return (data ?? []) as CalendarEvent[];
 }
 
-/** Inserts a new calendar event and returns the created row. */
-export async function createEvent(values: CalendarEventFormValues): Promise<CalendarEvent> {
+export async function createEvent(supabase: Db, values: CalendarEventFormValues, userId: string): Promise<CalendarEvent> {
   const color = deriveColor(values.type);
   const startUTC = new Date(values.start).toISOString();
   const endUTC = values.end !== '' ? new Date(values.end).toISOString() : null;
@@ -170,6 +172,7 @@ export async function createEvent(values: CalendarEventFormValues): Promise<Cale
       start: startUTC,
       end: endUTC,
       color,
+      user_id: userId,
     })
     .select()
     .single();
@@ -178,29 +181,29 @@ export async function createEvent(values: CalendarEventFormValues): Promise<Cale
   return data as CalendarEvent;
 }
 
-/** Fetches the stored weekly goal. Returns null if no row exists. */
-export async function fetchWeeklyGoal(): Promise<number | null> {
+export async function fetchWeeklyGoal(supabase: Db, userId: string): Promise<number | null> {
   const { data, error } = await supabase
     .from('study_goals')
     .select('weekly_goal')
-    .eq('id', 1)
+    .eq('user_id', userId)
     .maybeSingle();
 
   if (error) throw new Error(error.message);
   return data ? data.weekly_goal : null;
 }
 
-/** Upserts the weekly goal (single-row, id=1). */
-export async function upsertWeeklyGoal(goal: number): Promise<void> {
+export async function upsertWeeklyGoal(supabase: Db, goal: number, userId: string): Promise<void> {
   const { error } = await supabase
     .from('study_goals')
-    .upsert({ id: 1, weekly_goal: goal, updated_at: new Date().toISOString() });
+    .upsert(
+      { user_id: userId, weekly_goal: goal, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id' }
+    );
 
   if (error) throw new Error(error.message);
 }
 
-/** Deletes a calendar event by id. */
-export async function deleteEvent(id: string): Promise<void> {
+export async function deleteEvent(supabase: Db, id: string): Promise<void> {
   const { error } = await supabase
     .from('calendar_events')
     .delete()
@@ -209,8 +212,7 @@ export async function deleteEvent(id: string): Promise<void> {
   if (error) throw new Error(error.message);
 }
 
-/** Updates an existing calendar event's title, type, start, end, and color. */
-export async function updateEvent(id: string, values: CalendarEventFormValues): Promise<CalendarEvent> {
+export async function updateEvent(supabase: Db, id: string, values: CalendarEventFormValues): Promise<CalendarEvent> {
   const color = deriveColor(values.type);
   const startUTC = new Date(values.start).toISOString();
   const endUTC = values.end !== '' ? new Date(values.end).toISOString() : null;

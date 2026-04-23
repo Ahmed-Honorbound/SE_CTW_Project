@@ -1,15 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Notification as AppNotification } from '../../lib/types';
+import { useEffect, useState } from 'react';
+import { AppNotification } from '../../lib/types';
 import {
-  fetchNotifications,
   requestPushPermission,
-  markAsRead,
-  markAllAsRead,
   computeUnreadCount,
   sortNotificationsDesc,
-} from '../../lib/notificationService';
+} from '../../lib/notificationUtils';
+import {
+  fetchNotifications,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+} from '../../lib/apiClient';
 import '../styles/NotificationBell.css';
 
 type Notification = AppNotification;
@@ -25,7 +27,7 @@ function relativeTime(isoString: string): string {
   return `${days}d ago`;
 }
 
-export default function NotificationBell(): JSX.Element {
+export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,7 +57,7 @@ export default function NotificationBell(): JSX.Element {
   async function handleNotificationClick(notification: Notification) {
     if (notification.read) return;
     try {
-      await markAsRead(notification.id);
+      await markNotificationAsRead(notification.id);
       setNotifications((prev) =>
         prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n))
       );
@@ -66,7 +68,7 @@ export default function NotificationBell(): JSX.Element {
 
   async function handleMarkAllAsRead() {
     try {
-      await markAllAsRead();
+      await markAllNotificationsAsRead();
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     } catch {
       // silent failure

@@ -1,5 +1,7 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { Task, TimeSession, CompletionRecord } from './types';
+
+type Db = SupabaseClient;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -287,7 +289,7 @@ export function computeSuggestions(data: RawAnalyticsData): Suggestions {
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
-export async function fetchAnalyticsData(): Promise<RawAnalyticsData> {
+export async function fetchAnalyticsData(supabase: Db, userId: string): Promise<RawAnalyticsData> {
   const { data, error } = await supabase
     .from('tasks')
     .select(`
@@ -295,8 +297,9 @@ export async function fetchAnalyticsData(): Promise<RawAnalyticsData> {
       time_sessions ( id, task_id, started_at, ended_at ),
       completion_records ( id, task_id, completed_at, due_date, outcome )
     `)
+    .eq('user_id', userId)
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
-  return { tasks: data as Task[] };
+  return { tasks: (data ?? []) as Task[] };
 }

@@ -1,23 +1,26 @@
 .calendar-page {
   max-width: 960px;
   margin: 0 auto;
-  padding: 24px 20px;
-  font-family: Arial, sans-serif;
-  color: #000;
+  padding: 24px;
 }
 
 .calendar-title {
+  font-family: var(--font-serif);
   text-align: center;
-  color: #4e73df;
-  margin-bottom: 20px;
+  color: var(--navy);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 20px;
 }
 
 .calendar-error {
-  background: #fdecea;
-  color: #c62828;
+  background: var(--red-pale);
+  color: var(--red);
   padding: 10px 14px;
-  border-radius: 6px;
+  border-radius: var(--radius);
+  border: 1px solid #fecaca;
   margin-bottom: 16px;
+  font-size: 0.875rem;
 }
 
 /* ─── Badges ─────────────────────────────────────────────────────────────── */
@@ -26,13 +29,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #e8f5e9;
-  border: 1px solid #a5d6a7;
-  color: #2e7d32;
+  background: var(--green-pale);
+  border: 1px solid #bbf7d0;
+  color: var(--green-hover);
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   margin-bottom: 12px;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 0.875rem;
 }
 
 .badge-dismiss {
@@ -40,7 +44,7 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  color: #2e7d32;
+  color: var(--green-hover);
   padding: 0 4px;
 }
 
@@ -48,59 +52,69 @@
 
 .calendar-metrics {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .metric-card {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   padding: 14px 18px;
   flex: 1;
   min-width: 180px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .metric-label {
-  font-size: 0.82rem;
-  color: #666;
+  font-size: 0.75rem;
+  color: var(--text-2);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .metric-value {
   font-size: 1.4rem;
-  font-weight: bold;
-  color: #333;
+  font-weight: 700;
+  color: var(--text-1);
 }
 
 .goal-input {
-  width: 80px;
+  width: 90px;
   padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
   font-size: 1rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.goal-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(99,153,34,0.12);
 }
 
 /* ─── Event Form ─────────────────────────────────────────────────────────── */
 
 .event-form-section {
-  background: white;
-  border-radius: 10px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
   padding: 20px 24px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
 }
 
 .event-form-section h2 {
-  margin-bottom: 14px;
-  color: #333;
+  margin: 0 0 14px;
+  color: var(--navy);
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .event-form {
@@ -111,60 +125,75 @@
 }
 
 .form-label {
-  font-size: 0.88rem;
-  color: #555;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   margin-bottom: -4px;
 }
 
 .form-input,
 .form-select {
-  padding: 10px 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 0.9375rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   width: 100%;
   box-sizing: border-box;
+  outline: none;
+  background: #fafafa;
+  color: var(--text-1);
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(99,153,34,0.12);
+  background: white;
 }
 
 .form-error {
-  color: #c62828;
-  font-size: 0.88rem;
+  color: var(--red);
+  font-size: 0.8125rem;
 }
 
 .form-submit-btn {
-  background-color: #4e73df;
+  background: var(--green);
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: bold;
+  border-radius: var(--radius);
+  padding: 10px;
+  font-size: 0.9375rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.15s;
+  font-family: inherit;
 }
 
-.form-submit-btn:hover {
-  background-color: #3a5bbf;
-}
+.form-submit-btn:hover { background: var(--green-hover); }
 
 /* ─── Calendar ───────────────────────────────────────────────────────────── */
 
 .calendar-container {
-  background: white;
-  border-radius: 10px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
   padding: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ─── Event List ─────────────────────────────────────────────────────────── */
 
-.event-list-section {
-  margin-top: 24px;
-}
+.event-list-section { margin-top: 20px; }
 
 .event-list-section h2 {
-  margin-bottom: 12px;
-  color: #333;
+  margin: 0 0 12px;
+  color: var(--navy);
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .event-list {
@@ -180,53 +209,53 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 10px 14px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .event-list-color {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .event-list-title {
-  font-weight: bold;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
   flex-shrink: 0;
+  color: var(--text-1);
 }
 
 .event-list-meta {
-  font-size: 0.82rem;
-  color: #555;
+  font-size: 0.8125rem;
+  color: var(--text-2);
   flex: 1;
 }
 
 .event-delete-btn {
-  background: #e53935;
+  background: var(--red);
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 12px;
-  font-size: 0.82rem;
+  padding: 4px 10px;
+  font-size: 0.8125rem;
   cursor: pointer;
   flex-shrink: 0;
+  transition: background 0.12s;
 }
 
-.event-delete-btn:hover {
-  background: #c62828;
-}
+.event-delete-btn:hover { background: #b91c1c; }
 
 /* ─── Modal ──────────────────────────────────────────────────────────────── */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0,0,0,0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -234,14 +263,14 @@
 }
 
 .modal {
-  background: white;
-  border-radius: 10px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
   padding: 24px 28px;
   min-width: 320px;
   max-width: 480px;
   width: 90%;
   position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 }
 
 .modal-close {
@@ -250,71 +279,70 @@
   right: 14px;
   background: none;
   border: none;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
-  color: #666;
+  color: var(--text-2);
 }
 
-.modal-close:hover {
-  color: #000;
-}
+.modal-close:hover { color: var(--text-1); }
 
 .modal-title {
   margin: 0 0 14px;
-  font-size: 1.2rem;
-  color: #222;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--navy);
 }
 
 .modal-meta {
   margin: 6px 0;
-  font-size: 0.9rem;
-  color: #444;
+  font-size: 0.875rem;
+  color: var(--text-2);
 }
 
 .modal-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-top: 20px;
 }
 
 .modal-edit-btn {
-  background: #4e73df;
+  background: var(--green);
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 9px 20px;
-  font-size: 0.95rem;
+  border-radius: var(--radius);
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.12s;
 }
 
-.modal-edit-btn:hover {
-  background: #3a5bbf;
-}
+.modal-edit-btn:hover { background: var(--green-hover); }
 
 .modal-delete-btn {
-  background: #e53935;
+  background: var(--red);
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 9px 20px;
-  font-size: 0.95rem;
+  border-radius: var(--radius);
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.12s;
 }
 
-.modal-delete-btn:hover {
-  background: #c62828;
-}
+.modal-delete-btn:hover { background: #b91c1c; }
 
 .modal-cancel-btn {
-  background: #eee;
-  color: #333;
-  border: none;
-  border-radius: 6px;
-  padding: 9px 20px;
-  font-size: 0.95rem;
+  background: #f3f4f6;
+  color: var(--text-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.12s;
 }
 
-.modal-cancel-btn:hover {
-  background: #ddd;
-}
+.modal-cancel-btn:hover { background: #e5e7eb; }

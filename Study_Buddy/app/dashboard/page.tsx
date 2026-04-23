@@ -9,9 +9,6 @@ export default function dashboard() {
             <div className="child">
                 <Taskboard />
             </div>
-            <div className="child">
-                <Progresschart />
-            </div>
         </div>
     </div>
   );

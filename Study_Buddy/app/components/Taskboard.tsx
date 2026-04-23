@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Task, TaskStatus } from '../../lib/types';
-import { fetchAllTasks, updateTaskStatus } from '../../lib/taskService';
-import { evaluateNotifications } from '../../lib/notificationService';
+import { fetchTasks, updateTask, evaluateNotifications } from '../../lib/apiClient';
 import TaskCard from './TaskCard';
 import '../styles/Taskboard.css';
 
@@ -31,7 +30,7 @@ async function detectAndMarkOverdue(tasks: Task[]): Promise<string[]> {
     .map(t => t.id);
 
   for (const id of overdueIds) {
-    await updateTaskStatus(id, 'Overdue');
+    await updateTask(id, { status: 'Overdue' });
   }
   return overdueIds;
 }
@@ -47,7 +46,7 @@ export default function Taskboard() {
     setLoading(true);
     setError(null);
     try {
-      const tasks = await fetchAllTasks();
+      const tasks = await fetchTasks();
       const overdueIds = await detectAndMarkOverdue(tasks);
       // Apply overdue status locally so we don't need a second fetch
       const updated = tasks.map(t =>

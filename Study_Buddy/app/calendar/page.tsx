@@ -8,18 +8,20 @@ import {
   CalendarEvent,
   CalendarEventFormValues,
   EventType,
-  fetchEvents,
-  fetchWeeklyGoal,
-  createEvent,
-  updateEvent,
-  deleteEvent,
-  upsertWeeklyGoal,
   validateEventForm,
   isValidWeeklyGoal,
   computeAvailableHours,
   computeWeeklyStudyHours,
   shouldShowBadge,
-} from '../../lib/calendarService';
+} from '../../lib/calendarUtils';
+import {
+  fetchCalendarEvents,
+  fetchWeeklyGoal,
+  createCalendarEvent,
+  updateCalendarEvent,
+  deleteCalendarEvent,
+  upsertWeeklyGoal,
+} from '../../lib/apiClient';
 import '../styles/Calendar.css';
 
 const DEFAULT_FORM: CalendarEventFormValues = {
@@ -60,7 +62,7 @@ export default function CalendarPage(): JSX.Element {
   useEffect(() => {
     async function load() {
       try {
-        const [eventsData, goalData] = await Promise.all([fetchEvents(), fetchWeeklyGoal()]);
+        const [eventsData, goalData] = await Promise.all([fetchCalendarEvents(), fetchWeeklyGoal()]);
         setEvents(eventsData);
         const goal = goalData ?? 0;
         setWeeklyGoal(goal);
@@ -110,7 +112,7 @@ export default function CalendarPage(): JSX.Element {
     const error = validateEventForm(formValues);
     if (error) { setFormError(error); return; }
     try {
-      const created = await createEvent(formValues);
+      const created = await createCalendarEvent(formValues);
       setEvents(prev => [...prev, created]);
       setFormValues(DEFAULT_FORM);
       setFormError(null);
@@ -166,7 +168,7 @@ export default function CalendarPage(): JSX.Element {
   async function handleModalDelete() {
     if (!selectedEvent) return;
     try {
-      await deleteEvent(selectedEvent.id);
+      await deleteCalendarEvent(selectedEvent.id);
       setEvents(prev => prev.filter(e => e.id !== selectedEvent.id));
       closeModal();
     } catch (err) {
@@ -189,7 +191,7 @@ export default function CalendarPage(): JSX.Element {
     const error = validateEventForm(editValues);
     if (error) { setEditError(error); return; }
     try {
-      const updated = await updateEvent(selectedEvent.id, editValues);
+      const updated = await updateCalendarEvent(selectedEvent.id, editValues);
       setEvents(prev => prev.map(ev => ev.id === updated.id ? updated : ev));
       closeModal();
     } catch (err) {

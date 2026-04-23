@@ -1,6 +1,6 @@
 'use client';
 
-import { WeeklyStats } from '../../lib/analyticsService';
+import type { WeeklyStats } from '../../lib/analyticsUtils';
 
 interface WeeklySummaryProps {
   stats: WeeklyStats;

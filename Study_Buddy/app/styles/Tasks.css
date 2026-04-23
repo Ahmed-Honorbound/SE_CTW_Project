@@ -1,26 +1,129 @@
-.container {
-    justify-content: center;
-    justify-items: center;
-    flex-direction: column;
-    text-align: center;
+/* ─── Page wrapper (matches calendar-page) ───────────────────────────────── */
+
+.tasks-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
-.taskItem {
-    background-color: goldenrod;
-    border-radius: 5;
-    border-width:1;
-    padding: 20;
-    padding-left: 250;
-    padding-right: 250;
-    display: flex;
-    margin-bottom: 25;
-    
+/* ─── Page header ────────────────────────────────────────────────────────── */
+
+.tasks-header {
+  margin-bottom: 20px;
 }
+
+.tasks-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 4px;
+}
+
+.tasks-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-2);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ─── Form section card (matches event-form-section) ─────────────────────── */
+
+.task-form-section {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-card);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.task-form-section h2 {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 20px;
+}
+
+/* ─── Task Form ──────────────────────────────────────────────────────────── */
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 560px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 0.875rem;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  background: #f9fafb;
+  color: var(--text-1);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+
+.form-field textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 0.875rem;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  background: #f9fafb;
+  color: var(--text-1);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 96px;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: #9ca3af;
+  box-shadow: 0 0 0 2px rgba(134, 239, 172, 0.3);
+  background: white;
+}
+
+/* ─── Submit button (green, matches calendar form-submit-btn) ─────────────── */
 
 .taskButton {
-    background-color: green;
-    border-radius: 20;
-    border-width: 1;
-    border-color: white;
-    padding: 15;
+  width: 100%;
+  height: 40px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 8px;
+  font-family: inherit;
 }
+
+.taskButton:hover    { background: var(--green-hover); }
+.taskButton:disabled { opacity: 0.6; cursor: not-allowed; }
