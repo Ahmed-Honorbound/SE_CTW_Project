@@ -1,0 +1,16 @@
+.dashboard {
+  display: flex;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+}
+
+.child {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+
+.child:last-child { border-right: none; }

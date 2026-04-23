@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Study Planner</title>
+
+<!-- FullCalendar CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f6f9;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+  }
+
+  form {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  form input, form select, form button {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  button {
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  #calendar {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  #availableHours, #progress {
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h1>Smart Study Planner</h1>
+
+<section id="scheduler">
+  <h2>Add Event / Task</h2>
+  <form id="eventForm">
+    <input type="text" id="title" placeholder="Event Title (e.g., Math Class, Work)" required>
+
+    <select id="type">
+      <option value="class">Class</option>
+      <option value="task">Task</option>
+      <option value="work">Work</option>
+      <option value="personal">Personal</option>
+      <option value="appointment">Appointment</option>
+    </select>
+
+    <label>Start Time:</label>
+    <input type="datetime-local" id="start" required>
+
+    <label>End Time:</label>
+    <input type="datetime-local" id="end">
+
+    <button type="submit">Add Event</button>
+  </form>
+
+  <h3>Available Hours Today: <span id="availableHours">0</span></h3>
+  <h3>Weekly Study Progress: <span id="progress">0 / 0 hrs</span></h3>
+
+  <label>Weekly Study Goal (hours):</label>
+  <input type="number" id="goal" min="1" placeholder="Set your weekly study goal">
+</section>
+
+<div id="calendar"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Load saved events or initialize
+  let events = JSON.parse(localStorage.getItem("events")) || [];
+  let weeklyGoal = parseInt(localStorage.getItem("goal")) || 0;
+
+  // Initialize FullCalendar
+  let calendarEl = document.getElementById('calendar');
+  let calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    selectable: true,
+    events: events
+  });
+  calendar.render();
+
+  // Display saved goal
+  document.getElementById("goal").value = weeklyGoal;
+  updateProgress();
+
+  // Event form submission
+  document.getElementById("eventForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let title = document.getElementById("title").value;
+    let type = document.getElementById("type").value;
+    let start = document.getElementById("start").value;
+    let end = document.getElementById("end").value;
+
+    if (!title || !start) return alert("Title and Start Time are required.");
+
+    const colorMap = {
+      class: "#4e73df",
+      task: "#e74a3b",
+      work: "#36b9cc",
+      personal: "#1cc88a",
+      appointment: "#f6c23e"
+    };
+
+    let newEvent = {
+      title,
+      start,
+      end: end || null,
+      color: colorMap[type] || "#858796"
+    };
+
+    calendar.addEvent(newEvent);
+    events.push(newEvent);
+    localStorage.setItem("events", JSON.stringify(events));
+
+    calculateAvailableHours();
+    updateProgress();
+
+    document.getElementById("eventForm").reset();
+  });
+
+  // Weekly Study Goal input
+  document.getElementById("goal").addEventListener("change", function() {
+    weeklyGoal = parseInt(this.value) || 0;
+    localStorage.setItem("goal", weeklyGoal);
+    updateProgress();
+  });
+
+  function calculateAvailableHours() {
+    let todayStr = new Date().toISOString().split('T')[0];
+    let totalUsed = 0;
+
+    calendar.getEvents().forEach(event => {
+      let eventDate = event.startStr.split('T')[0];
+      if (eventDate === todayStr && event.end) {
+        let start = new Date(event.start);
+        let end = new Date(event.end);
+        totalUsed += (end - start)/(1000*60*60); // convert ms to hours
+      }
+    });
+
+    let sleepHours = 8;
+    let available = Math.max(0, 24 - sleepHours - totalUsed);
+    document.getElementById("availableHours").textContent = available.toFixed(2);
+  }
+
+  function updateProgress() {
+    let studyHours = 0;
+
+    calendar.getEvents().forEach(event => {
+      if (event.title.toLowerCase().includes("study") && event.end) {
+        let start = new Date(event.start);
+        let end = new Date(event.end);
+        studyHours += (end - start)/(1000*60*60);
+      }
+    });
+
+    document.getElementById("progress").textContent = `${studyHours.toFixed(2)} / ${weeklyGoal} hrs`;
+
+    // Badge system
+    if (studyHours >= 10) alert("🏆 Badge Earned: 10 Hour Study Streak!");
+    if (weeklyGoal > 0 && studyHours >= weeklyGoal) alert("🎉 Weekly Study Goal Achieved!");
+  }
+
+  // Initial calculation
+  calculateAvailableHours();
+  updateProgress();
+});
+</script>
+
+</body>
+</html>
