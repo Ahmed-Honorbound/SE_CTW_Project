@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Subtask } from '../../lib/types';
-import { addSubtask, toggleSubtask, updateSubtask, deleteSubtask } from '../../lib/taskService';
+import { addSubtask, toggleSubtask, updateSubtask, deleteSubtask } from '../../lib/apiClient';
 
 interface SubtaskListProps {
   taskId: string;

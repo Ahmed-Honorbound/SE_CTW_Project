@@ -1,6 +1,6 @@
 'use client';
 
-import { WeeklyStats } from '../../lib/analyticsService';
+import type { WeeklyStats } from '../../lib/analyticsUtils';
 
 interface WeeklySummaryProps {
   stats: WeeklyStats;
@@ -19,8 +19,8 @@ function formatHours(seconds: number): string {
 
 function formatWeekLabel(weekStart: Date): string {
   const end = new Date(weekStart);
-  end.setUTCDate(end.getUTCDate() + 6);
-  return `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })} – ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}`;
+  end.setDate(end.getDate() + 6);
+  return `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
 }
 
 export default function WeeklySummary({ stats, weekStart, onPrevWeek, onNextWeek, isCurrentWeek }: WeeklySummaryProps) {

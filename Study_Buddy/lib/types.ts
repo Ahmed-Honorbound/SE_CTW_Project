@@ -4,6 +4,7 @@ export type CompletionOutcome = 'ahead of time' | 'on time' | 'overdue';
 
 export interface Task {
   id: string;
+  user_id?: string;
   name: string;
   subject: string;
   due_date: string; // ISO date string YYYY-MM-DD
@@ -54,4 +55,19 @@ export interface ValidationErrors {
   due_date?: string;
   priority?: string;
   description?: string;
+}
+
+export type NotificationType = 'due_soon' | 'overdue';
+
+export interface AppNotification {
+  id: string;               // UUID, assigned by Supabase
+  user_id?: string;
+  task_id: string;
+  task_name: string;
+  subject: string;
+  due_date: string;         // YYYY-MM-DD
+  priority: Priority;
+  type: NotificationType;
+  read: boolean;
+  created_at: string;       // ISO timestamp
 }

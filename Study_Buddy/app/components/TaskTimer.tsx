@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { TimeSession } from '../../lib/types';
-import { startTimeSession, stopTimeSession, computeTotalSeconds } from '../../lib/taskService';
+import { startTimeSession, stopTimeSession } from '../../lib/apiClient';
+import { computeTotalSeconds } from '../../lib/taskUtils';
 
 interface TaskTimerProps {
   taskId: string;

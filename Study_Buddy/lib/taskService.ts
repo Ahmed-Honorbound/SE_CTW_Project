@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import {
   Task,
   TaskFormValues,
@@ -9,22 +9,36 @@ import {
   CompletionOutcome,
 } from './types';
 
+type Db = SupabaseClient;
+
 // ─── Tasks ───────────────────────────────────────────────────────────────────
 
-export async function fetchAllTasks(): Promise<Task[]> {
+export async function fetchAllTasks(supabase: Db, userId: string): Promise<Task[]> {
   const { data, error } = await supabase
     .from('tasks')
     .select('*, subtasks(*), time_sessions(*), completion_records(*)')
+    .eq('user_id', userId)
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
-  return data as Task[];
+  return (data ?? []) as Task[];
 }
 
-export async function createTask(values: TaskFormValues): Promise<Task> {
+export async function fetchTask(supabase: Db, id: string): Promise<Task> {
   const { data, error } = await supabase
     .from('tasks')
-    .insert({ ...values, status: 'Unstarted' })
+    .select('*, subtasks(*), time_sessions(*), completion_records(*)')
+    .eq('id', id)
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data as Task;
+}
+
+export async function createTask(supabase: Db, values: TaskFormValues, userId: string): Promise<Task> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .insert({ ...values, status: 'Unstarted', user_id: userId })
     .select()
     .single();
 
@@ -32,7 +46,7 @@ export async function createTask(values: TaskFormValues): Promise<Task> {
   return data as Task;
 }
 
-export async function updateTask(id: string, values: Partial<TaskFormValues>): Promise<Task> {
+export async function updateTask(supabase: Db, id: string, values: Partial<TaskFormValues>): Promise<Task> {
   const { data, error } = await supabase
     .from('tasks')
     .update(values)
@@ -44,7 +58,7 @@ export async function updateTask(id: string, values: Partial<TaskFormValues>): P
   return data as Task;
 }
 
-export async function updateTaskStatus(id: string, status: TaskStatus): Promise<void> {
+export async function updateTaskStatus(supabase: Db, id: string, status: TaskStatus): Promise<void> {
   const { error } = await supabase
     .from('tasks')
     .update({ status })
@@ -53,7 +67,7 @@ export async function updateTaskStatus(id: string, status: TaskStatus): Promise<
   if (error) throw new Error(error.message);
 }
 
-export async function uncompleteTask(id: string): Promise<void> {
+export async function uncompleteTask(supabase: Db, id: string): Promise<void> {
   const { error: statusError } = await supabase
     .from('tasks')
     .update({ status: 'In Progress' })
@@ -67,7 +81,7 @@ export async function uncompleteTask(id: string): Promise<void> {
   if (recordError) throw new Error(recordError.message);
 }
 
-export async function deleteTask(id: string): Promise<void> {
+export async function deleteTask(supabase: Db, id: string): Promise<void> {
   const { error } = await supabase
     .from('tasks')
     .delete()
@@ -79,16 +93,15 @@ export async function deleteTask(id: string): Promise<void> {
 // ─── Completion ───────────────────────────────────────────────────────────────
 
 export function computeOutcome(completedAt: Date, dueDate: string): CompletionOutcome {
-  // Compare using UTC date strings to avoid timezone-induced day shifts
   const completedDay = completedAt.toISOString().split('T')[0];
-  const dueDay = dueDate; // already YYYY-MM-DD
+  const dueDay = dueDate;
 
   if (completedDay < dueDay) return 'ahead of time';
   if (completedDay === dueDay) return 'on time';
   return 'overdue';
 }
 
-export async function recordCompletion(taskId: string, dueDate: string): Promise<CompletionRecord> {
+export async function recordCompletion(supabase: Db, taskId: string, dueDate: string): Promise<CompletionRecord> {
   const completedAt = new Date();
   const outcome = computeOutcome(completedAt, dueDate);
 
@@ -109,7 +122,7 @@ export async function recordCompletion(taskId: string, dueDate: string): Promise
 
 // ─── Time Sessions ────────────────────────────────────────────────────────────
 
-export async function startTimeSession(taskId: string): Promise<TimeSession> {
+export async function startTimeSession(supabase: Db, taskId: string): Promise<TimeSession> {
   const { data, error } = await supabase
     .from('time_sessions')
     .insert({ task_id: taskId, started_at: new Date().toISOString() })
@@ -120,7 +133,7 @@ export async function startTimeSession(taskId: string): Promise<TimeSession> {
   return data as TimeSession;
 }
 
-export async function stopTimeSession(sessionId: string): Promise<TimeSession> {
+export async function stopTimeSession(supabase: Db, sessionId: string): Promise<TimeSession> {
   const { data, error } = await supabase
     .from('time_sessions')
     .update({ ended_at: new Date().toISOString() })
@@ -143,7 +156,7 @@ export function computeTotalSeconds(sessions: TimeSession[]): number {
 
 // ─── Subtasks ─────────────────────────────────────────────────────────────────
 
-export async function addSubtask(taskId: string, name: string, description?: string): Promise<Subtask> {
+export async function addSubtask(supabase: Db, taskId: string, name: string, description?: string): Promise<Subtask> {
   const { data, error } = await supabase
     .from('subtasks')
     .insert({ task_id: taskId, name, description })
@@ -154,7 +167,7 @@ export async function addSubtask(taskId: string, name: string, description?: str
   return data as Subtask;
 }
 
-export async function toggleSubtask(subtaskId: string, completed: boolean): Promise<void> {
+export async function toggleSubtask(supabase: Db, subtaskId: string, completed: boolean): Promise<void> {
   const { error } = await supabase
     .from('subtasks')
     .update({ completed })
@@ -163,7 +176,7 @@ export async function toggleSubtask(subtaskId: string, completed: boolean): Prom
   if (error) throw new Error(error.message);
 }
 
-export async function updateSubtask(subtaskId: string, name: string, description?: string): Promise<void> {
+export async function updateSubtask(supabase: Db, subtaskId: string, name: string, description?: string): Promise<void> {
   const { error } = await supabase
     .from('subtasks')
     .update({ name, description })
@@ -172,7 +185,7 @@ export async function updateSubtask(subtaskId: string, name: string, description
   if (error) throw new Error(error.message);
 }
 
-export async function deleteSubtask(subtaskId: string): Promise<void> {
+export async function deleteSubtask(supabase: Db, subtaskId: string): Promise<void> {
   const { error } = await supabase
     .from('subtasks')
     .delete()

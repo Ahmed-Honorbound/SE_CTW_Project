@@ -138,7 +138,7 @@ describe('Property-based tests: analyticsService', () => {
     // Feature: analytics-summaries, Property 4: busiestDay has max session seconds or is null
     fc.assert(fc.property(arbRawData, arbWeekStart, (data, weekStart) => {
       const weekEnd = new Date(weekStart);
-      weekEnd.setUTCDate(weekEnd.getUTCDate() + 7);
+      weekEnd.setDate(weekEnd.getDate() + 7);
       const stats = computeWeeklyStats(data, weekStart);
 
       if (stats.busiestDay === null) {
@@ -146,7 +146,7 @@ describe('Property-based tests: analyticsService', () => {
         const dayBuckets: Record<string, number> = {};
         for (const task of data.tasks) {
           for (const s of filterSessionsInWindow(task.time_sessions ?? [], weekStart, weekEnd)) {
-            const day = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(s.started_at).getUTCDay()];
+            const day = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(s.started_at).getDay()];
             dayBuckets[day] = (dayBuckets[day] ?? 0) + sessionDurationSeconds(s);
           }
         }
@@ -157,7 +157,7 @@ describe('Property-based tests: analyticsService', () => {
         const dayBuckets: Record<string, number> = {};
         for (const task of data.tasks) {
           for (const s of filterSessionsInWindow(task.time_sessions ?? [], weekStart, weekEnd)) {
-            const day = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(s.started_at).getUTCDay()];
+            const day = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(s.started_at).getDay()];
             dayBuckets[day] = (dayBuckets[day] ?? 0) + sessionDurationSeconds(s);
           }
         }
@@ -197,8 +197,8 @@ describe('Property-based tests: analyticsService', () => {
   it('Property 6: subjectStats covers all active subjects exactly once', () => {
     // Feature: analytics-summaries, Property 6: each active subject appears exactly once in subjectStats
     fc.assert(fc.property(arbRawData, arbMonthYear, (data, { month, year }) => {
-      const monthStart = new Date(Date.UTC(year, month, 1));
-      const monthEnd = new Date(Date.UTC(year, month + 1, 1));
+      const monthStart = new Date(year, month, 1);
+      const monthEnd = new Date(year, month + 1, 1);
       const stats = computeMonthlyStats(data, month, year);
 
       const activeSubjects = new Set<string>();

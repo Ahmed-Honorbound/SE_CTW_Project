@@ -1,6 +1,6 @@
 'use client';
 
-import { MonthlyStats } from '../../lib/analyticsService';
+import type { MonthlyStats } from '../../lib/analyticsUtils';
 
 interface MonthlySummaryProps {
   stats: MonthlyStats;

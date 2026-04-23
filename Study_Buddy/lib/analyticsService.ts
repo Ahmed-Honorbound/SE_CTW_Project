@@ -1,5 +1,7 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { Task, TimeSession, CompletionRecord } from './types';
+
+type Db = SupabaseClient;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -57,10 +59,10 @@ function zeroOutcomes(): OutcomeCounts {
 
 export function getWeekStart(date: Date): Date {
   const d = new Date(date);
-  const day = d.getUTCDay(); // 0 = Sunday, 1 = Monday
+  const day = d.getDay(); // 0 = Sunday, 1 = Monday
   const diff = day === 0 ? -6 : 1 - day; // shift to Monday
-  d.setUTCDate(d.getUTCDate() + diff);
-  d.setUTCHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
   return d;
 }
 
@@ -103,7 +105,7 @@ export function filterCompletionsInWindow(
 
 export function computeWeeklyStats(data: RawAnalyticsData, weekStart: Date): WeeklyStats {
   const weekEnd = new Date(weekStart);
-  weekEnd.setUTCDate(weekEnd.getUTCDate() + 7);
+  weekEnd.setDate(weekEnd.getDate() + 7);
 
   const outcomes = zeroOutcomes();
   let totalSeconds = 0;
@@ -115,7 +117,7 @@ export function computeWeeklyStats(data: RawAnalyticsData, weekStart: Date): Wee
     for (const session of sessions) {
       const secs = sessionDurationSeconds(session);
       totalSeconds += secs;
-      const day = DAY_NAMES[new Date(session.started_at).getUTCDay()];
+      const day = DAY_NAMES[new Date(session.started_at).getDay()];
       dayBuckets[day] = (dayBuckets[day] ?? 0) + secs;
       taskSeconds[task.id] = (taskSeconds[task.id] ?? 0) + secs;
     }
@@ -153,8 +155,8 @@ export function computeWeeklyStats(data: RawAnalyticsData, weekStart: Date): Wee
 // ─── Monthly Stats ────────────────────────────────────────────────────────────
 
 export function computeMonthlyStats(data: RawAnalyticsData, month: number, year: number): MonthlyStats {
-  const monthStart = new Date(Date.UTC(year, month, 1));
-  const monthEnd = new Date(Date.UTC(year, month + 1, 1));
+  const monthStart = new Date(year, month, 1);
+  const monthEnd = new Date(year, month + 1, 1);
 
   const outcomes = zeroOutcomes();
   let totalSeconds = 0;
@@ -175,7 +177,7 @@ export function computeMonthlyStats(data: RawAnalyticsData, month: number, year:
     for (const session of sessions) {
       const secs = sessionDurationSeconds(session);
       totalSeconds += secs;
-      const day = DAY_NAMES[new Date(session.started_at).getUTCDay()];
+      const day = DAY_NAMES[new Date(session.started_at).getDay()];
       dayBuckets[day] = (dayBuckets[day] ?? 0) + secs;
       taskSeconds[task.id] = (taskSeconds[task.id] ?? 0) + secs;
       subjectMap[task.subject].totalSeconds += secs;
@@ -247,14 +249,14 @@ export function computeSuggestions(data: RawAnalyticsData): Suggestions {
       else if (record.outcome === 'on time') subjectOutcomes[task.subject].onTime++;
       else subjectOutcomes[task.subject].overdue++;
 
-      const day = DAY_NAMES[new Date(record.completed_at).getUTCDay()];
+      const day = DAY_NAMES[new Date(record.completed_at).getDay()];
       if (!dayCompletions[day]) dayCompletions[day] = { completed: 0, onTimeOrAhead: 0 };
       dayCompletions[day].completed++;
       if (record.outcome !== 'overdue') dayCompletions[day].onTimeOrAhead++;
     }
 
     for (const session of task.time_sessions ?? []) {
-      const hour = new Date(session.started_at).getUTCHours();
+      const hour = new Date(session.started_at).getHours();
       hourCounts[hour] = (hourCounts[hour] ?? 0) + 1;
     }
   }
@@ -287,7 +289,7 @@ export function computeSuggestions(data: RawAnalyticsData): Suggestions {
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
-export async function fetchAnalyticsData(): Promise<RawAnalyticsData> {
+export async function fetchAnalyticsData(supabase: Db, userId: string): Promise<RawAnalyticsData> {
   const { data, error } = await supabase
     .from('tasks')
     .select(`
@@ -295,8 +297,9 @@ export async function fetchAnalyticsData(): Promise<RawAnalyticsData> {
       time_sessions ( id, task_id, started_at, ended_at ),
       completion_records ( id, task_id, completed_at, due_date, outcome )
     `)
+    .eq('user_id', userId)
     .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
-  return { tasks: data as Task[] };
+  return { tasks: (data ?? []) as Task[] };
 }

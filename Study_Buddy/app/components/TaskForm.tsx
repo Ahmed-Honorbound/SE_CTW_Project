@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { TaskFormValues, ValidationErrors, Priority } from '../../lib/types';
 import { validateTaskForm, isValid } from '../../lib/validation';
-import { createTask, updateTask } from '../../lib/taskService';
-import { supabase } from '../../lib/supabase';
+import { createTask, fetchTask, updateTask } from '../../lib/apiClient';
 
 interface TaskFormProps {
   taskId?: string;
@@ -30,13 +29,8 @@ export default function TaskForm({ taskId, onSuccess }: TaskFormProps) {
 
   useEffect(() => {
     if (!taskId) return;
-    supabase
-      .from('tasks')
-      .select('*')
-      .eq('id', taskId)
-      .single()
-      .then(({ data, error }) => {
-        if (error || !data) return;
+    fetchTask(taskId)
+      .then((data) => {
         setValues({
           name: data.name,
           subject: data.subject,
@@ -44,6 +38,9 @@ export default function TaskForm({ taskId, onSuccess }: TaskFormProps) {
           priority: data.priority as Priority,
           description: data.description ?? '',
         });
+      })
+      .catch(() => {
+        // ignore load failures in form edit mode
       });
   }, [taskId]);
 
@@ -87,8 +84,6 @@ export default function TaskForm({ taskId, onSuccess }: TaskFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="task-form">
-      <h2>{isEditMode ? 'Edit Task' : 'Add New Task'}</h2>
-
       {submitStatus === 'success' && (
         <p className="form-success">Task {isEditMode ? 'updated' : 'saved'} successfully.</p>
       )}

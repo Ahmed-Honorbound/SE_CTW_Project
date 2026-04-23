@@ -58,12 +58,12 @@ describe('getWeekStart', () => {
     expect(getWeekStart(d).toISOString().split('T')[0]).toBe('2026-12-07');
   });
 
-  it('returns midnight UTC', () => {
+  it('returns midnight local time', () => {
     const d = new Date('2026-12-09T15:30:00Z');
     const result = getWeekStart(d);
-    expect(result.getUTCHours()).toBe(0);
-    expect(result.getUTCMinutes()).toBe(0);
-    expect(result.getUTCSeconds()).toBe(0);
+    expect(result.getHours()).toBe(0);
+    expect(result.getMinutes()).toBe(0);
+    expect(result.getSeconds()).toBe(0);
   });
 
   it('does not mutate the input date', () => {

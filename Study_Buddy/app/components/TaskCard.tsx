@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Task } from '../../lib/types';
-import { updateTaskStatus, deleteTask, recordCompletion, stopTimeSession, uncompleteTask } from '../../lib/taskService';
+import { updateTask, deleteTask, recordCompletion, stopTimeSession, uncompleteTask, deleteNotificationsForTask, markNotificationsReadForTask } from '../../lib/apiClient';
 import SubtaskList from './SubtaskList';
 import TaskTimer from './TaskTimer';
 
@@ -21,7 +21,7 @@ export default function TaskCard({ task, onUpdate }: TaskCardProps) {
   async function handleStart() {
     setError(null);
     try {
-      await updateTaskStatus(task.id, 'In Progress');
+      await updateTask(task.id, { status: 'In Progress' });
       onUpdate();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to start task.');
@@ -36,8 +36,9 @@ export default function TaskCard({ task, onUpdate }: TaskCardProps) {
       if (activeSession) {
         await stopTimeSession(activeSession.id);
       }
-      await updateTaskStatus(task.id, 'Complete');
+      await updateTask(task.id, { status: 'Complete' });
       await recordCompletion(task.id, task.due_date);
+      await markNotificationsReadForTask(task.id);
       onUpdate();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to complete task.');
@@ -47,6 +48,7 @@ export default function TaskCard({ task, onUpdate }: TaskCardProps) {
   async function handleDelete() {
     setError(null);
     try {
+      await deleteNotificationsForTask(task.id);
       await deleteTask(task.id);
       onUpdate();
     } catch (err) {
