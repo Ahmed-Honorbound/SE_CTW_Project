@@ -100,7 +100,7 @@ export default function TaskCard({ task, onUpdate }: TaskCardProps) {
             {(task.status === 'Unstarted' || task.status === 'Overdue') && (
               <button onClick={handleStart}>Start</button>
             )}
-            {(task.status === 'In Progress' || task.status === 'Unstarted' || task.status === 'Overdue') && (
+            {(task.status === 'In Progress' || task.status === 'Overdue') && (
               <button onClick={handleComplete}>Complete</button>
             )}
             <button onClick={() => router.push(`/tasks?taskId=${task.id}`)}>Edit</button>

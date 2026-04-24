@@ -19,7 +19,9 @@ export default function Home() { //Must wrap the details in this exxport functio
           <section className ="hero">
               <h1>Organize Your Time. Optimize Your Future.</h1>
               <p>Smart scheduling, task tracking, and productivity insights — all in one place.</p>
-              <button className="primary-btn">Get Started</button> 
+                <a href="signup">
+                    <button className="primary-btn">Get Started</button> 
+                </a>
           </section>
 
           <section className="section" id="features">
